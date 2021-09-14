@@ -1,3 +1,794 @@
+# vanilaJS 1장
+
+[Codebox](https://codesandbox.io/) 사용하여 console에 "Hello JavaScript" 출력
+
+## 변수
+
+**변수:** 바뀔 수 있는 값 (한 번 값을 선언하고 나서 바꿀 수 있음)
+
+변수 선언 시 let 키워드 사용
+
+한 번 선언하면 똑같은 이름으로 선언할 수 없음
+
+*단, 다른 블록 범위 내에서는 똑같은 이름으로 사용 가능
+
+**상수:** 한 번 선언하고 값이 바뀌지 않는 고정된 값
+
+상수 선언 시 const 키워드 사용
+
+한 번 선언하면 똑같은 이름으로 선언할 수 없음
+
+- 변수 선언하는 다른 방법?
+
+  var ⇒ 똑같은 이름으로 여러 번 선언 가능
+
+- var과 let의 차이?
+
+  사용범위가 다름
+
+- 구형 브라우저에서는 let과 const를 사용할 수 없어서 var 사용하게 될 수도 있으나 거의 없음
+
+**데이터타입**
+
+- 숫자
+- 문자열(큰 or 작은 따옴표로 감싸서 선언)
+- boolean(true, false)
+- 없음(null: 값이 없다는 고의적 설정 & undefined: 값이 아직 설정되지 않은 경우)
+
+## 연산자
+
+**산술 연산자:** 사칙연산을 하는 연산자 (+, -, *, /, ++, —)
+
+**대입 연산자:** 특정 값에 연산을 한 값을 바로 설정할 때 사용할 수 있는 연산자 (+=, -=, *=, /=, =)
+
+**논리 연산자:** boolean 타입을 위한 연산자
+
+- !: not → true는 false로, false는 true로
+- &&: and → 둘 다 true일 때만 true, 나머지는 false
+- ||: or → 하나라도 true일 때 true, 둘 다 false면 false
+
+<연산 순서>
+
+not → and→or
+
+**비교 연산자:** 두 값을 비교할 때 사용
+
+- ===: 타입까지 같은지 확인
+
+- ==: 값만 같은지 확인(타입 검사X)
+
+  ex) 1 == '1' : true, 0 == 'false': true, null == undefined: true
+
+- !==: 타입까지 다른지 확인
+
+- !=: 타입 검사X
+
+- <, >
+
+*주석:  / / or */ / *
+
+*문자열 붙이기: +
+
+## 조건문
+
+- **if문**
+
+  조건 만족 시 실행시킬 코드가 {}로 감싸져있음 ⇒ 코드블럭, 참일 때 코드 실행
+
+- **if-else문**
+
+  특정 조건이 만족할 때와 만족하지 않을 때 서로 다른 코드를 실행해야 된다면 사용
+
+- **if-else if문**
+
+  여러 조건에 따라 다른 작업을 해야할 때 사용
+
+- **switch/case문**
+
+  특정 값이 무엇이냐에 따라 다른 작업을 하고 싶을 때 사용
+
+```jsx
+switch("특정값"){
+	case "값1":
+		"실행할 식"
+		break;
+	case "값2":
+		"실행할 식"
+		break;
+.
+	default:
+		"default 식"
+}
+```
+
+⇒ case에 실행할 코드를 작성하고 마지막에 break 쓰지 않으면 그 다음 case의 코드까지 실행
+
+⇒ default는 case로 준비하지 않은 값이 특정 값인 경우 실행
+
+## 함수
+
+**함수 :** 특정 코드를 하나의 명령으로 실행할 수 있게 하는 기능
+
+- function 키워드: 함수 만들 때
+- 매개변수: 함수가 어떤 값을 받을지
+- return 키워드: 함수의 결과물 지정 & return 시 함수 종료
+
+```jsx
+function hello(name){
+	console.log("Hello, " + name + "!");
+} 
+hello("javascript"); // "Hello, javascript!"
+```
+
+⇒ 위의 코드에서 사용한 문자열 연결 방법: +
+
+⇒ ES6(js 버전)의 템플릿 리터럴 문법 사용으로 더 편하게 조합 가능
+
+```jsx
+function hello(name) {
+	console.log(`Hello, ${name}!`);
+}
+hello("javascript");
+```
+
+**화살표 함수**
+
+- fuction 키워드 대신 화살표(⇒) 사용
+- 화살표 좌측 - 함수의 파라미터
+- 화살표 우측 - 코드 블럭
+
+```jsx
+const add = (a, b) => {
+  return a + b;
+};
+
+console.log(add(1, 2));
+//위의 코드처럼 코드 블록 내부에서 바로 return 하는 경우 아래처럼 변환 가능
+const add = (a, b) => a + b;
+console.log(add(1, 2));
+```
+
+⇒ 여러 줄로 구성되어있는 경우는 코드 블럭을 만들어야 함
+
+- 화살표 함수 vs 일반 function 함수
+
+  : this가 다름
+
+## 객체
+
+**객체:** 변수 혹은 상수를 사용하게 될 때 하나의 이름에 여러 종류의 값을 넣을 수 있게 함
+
+```jsx
+const dog = {
+	name: "멍멍이",
+	age: 2
+};
+console.log(dog.name); //멍멍이
+console.log(dog.age); //2
+```
+
+선언 시 { } 안에 원하는 값을 넣기 ⇒ 키: 원하는 값
+
+- 키에 해당하는 부분: 공백이 없어야 함
+
+  if) 공백 존재해야 한다면? "key with space": true
+
+**함수에서 객체를 파라미터로 받기**
+
+```jsx
+const ironMan = {
+  name: '토니 스타크',
+  actor: '로버트 다우니 주니어',
+  alias: '아이언맨'
+};
+
+const captainAmerica = {
+  name: '스티븐 로저스',
+  actor: '크리스 에반스',
+  alias: '캡틴 아메리카'
+};
+
+function print(hero) {
+  const text = `${hero.alias}(${hero.name}) 역할을 맡은 배우는 ${
+    hero.actor
+  } 입니다.`;
+  console.log(text);
+}
+
+print(ironMan); //아이언맨(토니 스타크) 역할을 맡은 배우는 로버트 다우니 주니어 입니다.
+```
+
+**객체 비구조화 할당**
+
+- print(): 파라미터로 받아온 hero 내부의 값을 조회할 때마다 hero.~ 입력
+
+객체 비구조화 할당 문법 사용 시 → 더 짧고 간결하게 가능 (= 객체 구조 분해)
+
+```jsx
+function print(hero) {
+  const { alias, name, actor } = hero;
+  const text = `${alias}(${name}) 역할을 맡은 배우는 ${actor} 입니다.`;
+  console.log(text);
+}
+//객체에서 값을 추출하여 새로운 상수로 선언하는 것 
+const { alias, name, actor } = hero;
+//파라미터 단계에서 객체 비구조화 할당 가능
+function print({ alias, name, actor }) {
+  const text = `${alias}(${name}) 역할을 맡은 배우는 ${actor} 입니다.`;
+  console.log(text);
+}
+```
+
+**객체 안에 함수 넣기**
+
+```jsx
+const dog = {
+  name: '멍멍이',
+  sound: '멍멍!',
+  say: function say() {
+    console.log(this.sound);
+  }
+};
+
+dog.say(); //멍멍
+```
+
+함수 → 객체 안으로 들어가면 this = 자신이 속해있는 객체
+
+```jsx
+//함수 선언 시 이름 없어도 돼
+const dog = {
+  name: '멍멍이',
+  sound: '멍멍!',
+  say: function() {
+    console.log(this.sound);
+  }
+};
+
+dog.say(); //멍멍
+```
+
+객체 안에 함수를 넣을 때, 화살표 함수로 선언하면 제대로 작동 X
+
+**WHY?**
+
+: funtion으로 선언한 함수는 this가 제대로 자신이 속한 객체를 가리키게 되는데 화살표 함수는 그렇지 않음
+
+**Getter 함수와 Setter 함수**
+
+객체 내의 값은 수정 OK
+
+Getter 함수 & Setter 함수 ⇒ 특정 값을 바꾸려고 하거나, 특정 값을 조회하려고 할 때 원하는 코드 실행 가능
+
+- Getter 함수: 특정 값을 조회할 때 우리가 설정한 함수로 연산된 값 반환
+
+  함수 앞 부분에 get 키워드
+
+```jsx
+const numbers = {
+  a: 1,
+  b: 2,
+  get sum() {
+    console.log('sum 함수가 실행됩니다!');
+    return this.a + this.b;
+  }
+};
+
+console.log(numbers.sum);
+numbers.b = 5;
+console.log(numbers.sum);
+```
+
+- Setter 함수: 특정 값을 바꾸려고 할 때
+
+  함수 앞 부분에 set 키워드
+
+```jsx
+const numbers = {
+  _a: 1,
+  _b: 2,
+  sum: 3,
+  calculate() {
+    console.log('calculate');
+    this.sum = this._a + this._b;
+  },
+  get a() {
+    return this._a;
+  },
+  get b() {
+    return this._b;
+  },
+  set a(value) {
+    console.log('a가 바뀝니다.');
+    this._a = value;
+    this.calculate();
+  },
+  set b(value) {
+    console.log('b가 바뀝니다.');
+    this._b = value;
+    this.calculate();
+  }
+};
+
+console.log(numbers.sum);
+numbers.a = 5;
+numbers.b = 7;
+numbers.a = 9;
+console.log(numbers.sum);
+console.log(numbers.sum);
+console.log(numbers.sum);
+
+```
+
+## 배열
+
+객체: 한 변수 or 상수에 여러가지 정보를 담기 위함
+
+**배열**
+
+- 여러 개의 항목들이 들어있는 리스트
+- [ ]로 감싸주기
+
+```jsx
+const array = [1, 2, 3, 4, 5];
+```
+
+- 어떤 값이든 넣을 수 있음 (객체 배열도 가능)
+
+```jsx
+const objects = [{name: "멍멍이"}, {name: "야옹이"}];
+```
+
+- 조회: 배열이름[n];
+- 첫 번째 항목: n = 0
+
+**배열에 새 항목 추가하기**
+
+→ push 함수(내장 함수) 사용
+
+```jsx
+const objects = [{ name: '멍멍이' }, { name: '야옹이' }];
+
+objects.push({
+  name: '멍뭉이'
+});
+
+console.log(objects);
+```
+
+**배열 크기 알아내기**
+
+→ 배열의 length 값 확인
+
+```jsx
+console.log(objects.length);
+```
+
+## 반복문
+
+**반복문:** 특정 작업을 반복적으로 할 때 사용할 수 있는 구문
+
+**for문:** 특정 값에 변화를 줘가면서 우리가 정한 조건이 만족된다면 계속 반복
+
+```
+for (초기 구문; 조건 구문; 변화 구문){
+	코드
+}
+```
+
+- 변화 구문에 증감 모두 가능
+- 숫자에 변화를 주어가며 반복적으로 작업 실행
+
+**배열과 for:** for문 사용하여 배열의 내용 정렬 가능
+
+**while문:** 특정 조건이 참이면 계속 반복하는 반복문, 조건을 확인만 하며 반복
+
+↔ for문: 특정 숫자를 가지고 숫자 값 비교, 증감하면서 반복
+
+```
+let 변수 = 0;
+while (조건){
+	코드
+	변화구문
+}
+```
+
+⇒ 조건문이 언젠가는 false가 되도록 설정해야함 (if not 무한반복)
+
+**for...of문:** 배열에 관한 반복문을 돌리기 위해서 만들어진 반복문 (많이 사용X)
+
+```jsx
+let numbers = [10, 20, 30, 40, 50];
+for (let number of numbers) {
+  console.log(number);
+}
+```
+
+**객체를 위한 반복문 for...in문**
+
+객체의 정보를 배열 형태로 받아올 수 있는 함수
+
+```jsx
+const doggy = {
+  name: '멍멍이',
+  sound: '멍멍',
+  age: 2
+};
+
+console.log(Object.entries(doggy));
+console.log(Object.keys(doggy));
+console.log(Object.values(doggy));
+```
+
+- Object.entries: [ [ 키, 값 ], [ 키, 값 ] ] 형태의 배열로 변환
+
+- Object.keys: [ 키, 키, 키 ] 형태의 배열로 변환
+
+- Object.values: [ 값, 값, 값 ] 형태의 배열로 반환
+
+  ⇒ 객체가 지니고 있는 값에 대하여 반복을 하고 싶다면 위 함수들 사용 OK
+
+```jsx
+const doggy = {
+  name: '멍멍이',
+  sound: '멍멍',
+  age: 2
+};
+
+for (let key in doggy) {
+  console.log(`${key}: ${doggy[key]}`);
+}
+```
+
+**break 와 continue:** 반복문 벗어나거나 그 다음 루프를 돌게 함
+
+- continue: 다음 루프를 실행 (해당하는 루프의 continue 밑의 나머지 코드는 실행하지 않고 넘어감)
+- break: 반복문 끝내기
+
+## 배열 내장함수
+
+**forEach**
+
+- for문 대체 가능
+
+```jsx
+const superheroes = ['아이언맨', '캡틴 아메리카', '토르', '닥터 스트레인지'];
+
+//for문 사용
+for (let i = 0; i < superheroes.length; i++) {
+  console.log(superheroes[i]);
+}
+
+//forEach문 사용
+superheroes.forEach(hero => {
+  console.log(hero);
+});
+```
+
+- forEach 함수의 파라미터: 각 원소에 대해 처리하고 싶은 코드
+
+  ex) hero → superheroes 내의 원소 각각
+
+*콜백함수: 함수형태의 파라미터를 전달하는 것
+
+**map:** 배열 안의 각 원소를 반환할 때 사용 → 새로운 배열 생성
+
+ex) 배열 안의 모든 숫자를 제곱해서 새로운 배열을 만들고 싶다면?
+
+```jsx
+const array = [1, 2, 3, 4, 5, 6, 7, 8];
+
+//for문 사용
+const squared = [];
+for (let i = 0; i < array.length; i++) {
+  squared.push(array[i] * array[i]);
+}
+
+//forEach문 사용
+const squared = [];
+array.forEach(n => {
+  squared.push(n * n);
+});
+
+//map 사용
+const square = n => n * n;
+const squared = array.map(square);
+
+//함수 이름 붙여 선언할 필요X
+const squared = array.map(n => n * n);
+
+console.log(squared);
+```
+
+map 함수의 파라미터: 변화를 주는 함수 (변화함수)
+
+ex) square(변화함수): 파라미터 n을 받아와서 제곱
+
+[array.map](http://array.map/) 함수를 사용할 때 square 변화함수를 사용하여 내부의 모든 값에 대하여 제곱하여 새로운 배열 생성
+
+**indexOf:** 원하는 항목이 몇 번째 원소인지 찾아주는 함수
+
+```jsx
+const superheroes = ['아이언맨', '캡틴 아메리카', '토르', '닥터 스트레인지'];
+const index = superheroes.indexOf('토르');
+console.log(index); //2
+```
+
+**findIndex:** 배열 내의 값이 객체 or 배열일 때 몇 번째 원소인지 찾아주는 함수
+
+↔ indexOf: 배열 내의 값이 숫자, 문자열, 또는 불리언일 때 찾고자 하는 항목이 몇 번째 원소인지 찾아주는 함수
+
+```jsx
+const todos = [
+  {
+    id: 1,
+    text: '자바스크립트 입문',
+    done: true
+  },
+  {
+    id: 2,
+    text: '함수 배우기',
+    done: true
+  },
+  {
+    id: 3,
+    text: '객체와 배열 배우기',
+    done: true
+  },
+  {
+    id: 4,
+    text: '배열 내장함수 배우기',
+    done: false
+  }
+];
+
+const index = todos.findIndex(todo => todo.id === 3);
+console.log(index); //2
+```
+
+**find:** 찾아낸 값이 몇 번째인지 알아내는 것이 아니라 찾아낸 값 자체를 반환 (findIndex와 비슷)
+
+```jsx
+const todo = todos.find(todo => todo.id === 3);
+console.log(todo); //{id: 3, text: "객체와 배열 배우기", done: true}
+```
+
+**filter:** 배열에서 특정 조건을 만족하는 값들만 따로 추출하여 새로운 배열 생성
+
+```jsx
+const tasksNotDone = todos.filter(todo => todo.done === false);
+//동일한 코드
+const tasksNotDone = todos.filter(todo => !todo.done);
+console.log(tasksNotDone); //[{id: 4, text: '배열 내장 함수 배우기', done: false }];
+```
+
+→ filter 함수에 넣는 파라미터: 조건을 검사하는 함수
+
+함수의 파라미터: 각 원소의 값
+
+**splice:** 배열에서 특정 항목을 제거할 때 사용
+
+```jsx
+const numbers = [10, 20, 30, 40];
+//삭제할 항목의 index찾기
+const index = numbers.indexOf(30);
+numbers.splice(index, 1);
+console.log(numbers); //[10,20,40]
+```
+
+→ splice 사용 시 첫 번째 파라미터: 어떤 인덱스부터 지울지
+
+두 번째 파라미터: 그 인덱스부터 몇 개를 지울지
+
+**slice:** 배열 잘라낼 때 사용, 기존의 배열은 건드리지 않음
+
+```jsx
+const sliced = numbers.slice(0, 2); // 0부터 시작해서 2전까지
+
+console.log(sliced); // [10, 20]
+console.log(numbers); // [10, 20, 30, 40]
+```
+
+→ slice 사용 시 첫 번째 파라미터: 어디서부터 자를지
+
+두 번째 파라미터: 어디까지 자를지
+
+**shift와 pop**
+
+- shift: 첫 번째 원소를 배열에서 추출 (추출 과정 - 배열에서 해당 원소 사라짐)
+- pop: 배열의 마지막에 항목 추출 (push: 배열 마지막에 항목 추가)
+
+**unshift (↔ shift):** 배열의 맨 앞에 원소 추가, 파라미터에는 추가하고 싶은 원소
+
+**concat:** 여러 개의 배열을 하나의 배열로 합치기
+
+```
+첫 번째.concat(두 번째);
+```
+
+→ 배열에 변화를 주지 X
+
+**join:** 배열 안의 값들을 문자열 형태로 합치기
+
+```jsx
+const array = [1, 2, 3, 4, 5];
+console.log(array.join()); // 1,2,3,4,5 -> 공식 문서에 표기되어있음
+console.log(array.join(' ')); // 1 2 3 4 5
+console.log(array.join(', ')); // 1, 2, 3, 4, 5
+```
+
+**reduce**
+
+```jsx
+//초기에는 이런 식
+const numbers = [1, 2, 3, 4, 5];
+let sum = array.reduce((accumulator, current) => accumulator + current, 0);
+console.log(sum);
+```
+
+→ 첫 번째 파라미터: accumulator(누적된 값)와 current를 파라미터로 가져와 결과 반환하는 콜백함수
+
+두 번째 파라미터: reduce 함수에서 사용할 초깃값
+
+ex)
+
+```jsx
+//배열 내의 모든 원소의 합 구하기
+const numbers = [1, 2, 3, 4, 5];
+let sum = numbers.reduce((accumulator, current) => {
+  console.log({ accumulator, current });
+  return accumulator + current;
+}, 0);
+
+console.log(sum);
+```
+
+1. 배열을 처음부터 끝까지 반복하면서 전달한 콜백한 함수 호출
+
+2. 첫 accumulator 값 = 0
+
+   WHY? 두 번째 파라미터인 초깃값을 0으로 설정
+
+   [1] 첫 콜백함수 호출 시, 0 + 1 = 1 (accumulator) 반환
+
+   [2] 그 다음 콜백함수 호출 시, 1 + 2 = 3 (accumulator) 반환
+
+   .
+
+   .
+
+   결과: 15
+
+## 프로토타입과 클래스
+
+**객체 생성자:** 함수를 통해서 새로운 객체를 만들고 그 안에 넣고 싶은 값 혹은 함수들을 구현할 수 있게 함
+
+- 객체 생성자 사용 시 보통 함수의 이름 = 대문자
+- new 키워드: 새로운 객체를 만들 때
+- 프로토타입: 같은 객체 생성자 함수를 사용하는 경우, 특정 함수 or 값을 재사용할 수 있음
+
+```jsx
+function Animal(type, name, sound) {
+  this.type = type;
+  this.name = name;
+  this.sound = sound;
+  this.say = function() {
+    console.log(this.sound);
+  };
+}
+
+const dog = new Animal('개', '멍멍이', '멍멍');
+const cat = new Animal('고양이', '야옹이', '야옹');
+
+dog.say(); //멍멍
+cat.say(); //야옹
+```
+
+**프로토타입**
+
+- .prototype.[원하는키] = 코드
+
+```jsx
+function Animal(type, name, sound) {
+  this.type = type;
+  this.name = name;
+  this.sound = sound;
+}
+
+Animal.prototype.say = function() {
+  console.log(this.sound);
+}; //재사용을 위해서 프로토타입으로 선언
+Animal.prototype.sharedValue = 1;
+
+const dog = new Animal('개', '멍멍이', '멍멍');
+const cat = new Animal('고양이', '야옹이', '야옹');
+
+dog.say(); //멍멍
+cat.say(); //야옹
+
+console.log(dog.sharedValue); //1
+console.log(cat.sharedValue); //1
+```
+
+**객체 생성자 상속받기**
+
+```jsx
+function Animal(type, name, sound) {
+  this.type = type;
+  this.name = name;
+  this.sound = sound;
+}
+
+Animal.prototype.say = function() {
+  console.log(this.sound);
+};
+Animal.prototype.sharedValue = 1;
+
+function Dog(name, sound) {
+  Animal.call(this, '개', name, sound);
+}
+Dog.prototype = Animal.prototype;
+
+function Cat(name, sound) {
+  Animal.call(this, '고양이', name, sound);
+}
+Cat.prototype = Animal.prototype;
+
+const dog = new Dog('멍멍이', '멍멍');
+const cat = new Cat('야옹이', '야옹');
+
+dog.say();
+cat.say();
+```
+
+- 새로 만든 Dog와 Cat 함수에서 [Animal.call](http://animal.call/) 호출
+- 첫 번째 인자: this, 이후: Animal 객체 생성자 함수에서 필요로 하는 파라미터
+- prototype을 공유해야하기 때문에 상속받은 객체 생성자 함수를 만들고 나서는 prototype 값을 Animal.prototype으로 설정
+
+**클래스:** ES6에서 추가 - 객체 생성자로 구현했던 코드를 명확하고 깔끔하게 구현 가능 + 상속
+
+```jsx
+class Animal {
+  constructor(type, name, sound) {
+    this.type = type;
+    this.name = name;
+    this.sound = sound;
+  }
+  say() {
+    console.log(this.sound);
+  }
+}
+
+const dog = new Animal('개', '멍멍이', '멍멍');
+const cat = new Animal('고양이', '야옹이', '야옹');
+
+dog.say(); //멍멍
+cat.say(); //야옹
+```
+
+- 메서드: 클래스 내부 함수 ⇒ 만들면 자동으로 prototype으로 등록
+- 상속이 쉬움
+
+```jsx
+class Dog extends Animal {
+  constructor(name, sound) {
+    super('개', name, sound);
+  }
+}
+
+class Cat extends Animal {
+  constructor(name, sound) {
+    super('고양이', name, sound);
+  }
+}
+
+const dog = new Dog('멍멍이', '멍멍');
+const cat = new Cat('야옹이', '야옹');
+```
+
+- extends 키워드: 상속 받을 때
+- constructor에서 사용하는 super()함수: 상속받은 클래스의 생성자
+
 # vanilaJS 2장
 
 ## 삼항연산자
