@@ -1,0 +1,98 @@
+# 7주차 JS 스터디 정리
+
+| 장  | 제목                           |
+| --- | ------------------------------ |
+| 9장 | 익스프레스로 SNS 서비스 만들기 |
+
+## 9장
+
+### 9.1 프로젝트 구조 갖추기
+
+package.json 생성생성하는 방법은 2가지 이다. 직접 쓰거나, `npm init` 명령어로 작성하면 된다.
+
+시퀄라이즈 설치이 프로젝트에서는 MySQL 데이터베이스로 사용할 것이다. 아래 명령어를 호출하면 `node_modules` 폴더와 `package-lock.json`이 자동으로 생성된다.
+
+```jsx
+$ npm i sequelize mysql2 sequelize-cli
+$ npx sequelize init
+```
+
+템플릿 파일을 넣을 views, 라우터 파일을 넣을 routes, 정적 파일을 넣을 public, passport패키지를 위한 passport 폴더들을 만든다.
+
+서버 코드다 담길 app.js, 설정값들을 담을 .env 파일 생성
+
+*템플릿 엔진은 넌적스를 사용한다.
+
+### 9.2 데이터베이스 세팅하기
+
+MySQL과 시퀄라이즈로 데이터 베이스를 설정한다.
+
+- 사용자 정보를 저장하는 모델provider 속성은 SNS 로그인한 경우, local : 로컬 로그인, kakao : 카카오 로그인 으로 저장해서 구분한다. 테이블 옵션으로 timestamps, paranoid 가 true 이므로 createdAt, updatedAt, deletedAt 컬럼도 생성된다.User : Post = 1 : NUser : User = N : M둘 다 User 모델이라서 구분하기 위해 as 옵션을 넣어야 함.
+- 게시글 모델 : 게시글 내용, 이미지 경로 저장게시글 등록자 아이디를 담은 컬럼은 나중에 관계를 설정할 때, 시퀄라이즈가 알아서 생성함User : Post = 1 : NPost : Hashtag = N : M
+- 해시태그 모델 : 태그 이름을 저장함해시태그 모델을 따로 두는 이유는 나중에 태그로 검색하기 위해서Hashtad : Post = N : M
+
+### 9.3 Passport 모듈로 로그인 구현하기
+
+passport 모듈은 이름처럼 우리의 서비스를 사용할 수 있게 해주는 여권 같은 역할을 한다.이것을 사용하면 기존의 SNS 서비스 계정으로 로그인 하는 것을 해결할 수 있다.
+
+```jsx
+// Passport 관련 패키지 설치
+$ npm i passport passport-local passport-kakao bcrypt
+module.exports = () => {
+    //로그인시 실행
+    //req.session(세션) 객체에 어떤 데이터를 저장할지 정하는 메서드
+    //사용자 정보 객체를 세션에 아이디로 저장
+    passport.serializeUser((user, done) => {
+        //done( 첫 번째 인수, 두 번째 인수)
+        //첫 번째 인수 :: 에러 발생시 사용
+        //두 번째 인수 :: 저장하고 싶은 데이터
+        done(null, user.id);
+    });
+
+    //세션에 저장한 아이디를 통해 사용자 정보 객체를 불러오는 것
+    //매요청시 실행. passport.sesseion 미들웨어가 이 메서드 호출함
+    //serializeUser의 done 의 두번째 인수가 이 메서드의 매개변수가 됨
+    passport.deserializeUser((id, done) => {
+        User.findOne({ where: { id } })
+            .then(user => done(null, user))
+            .catch(err => done(err));
+    });
+
+    local();
+    kakao();
+};
+```
+
+- Passport는 로그인시의 동작을 전략(strategy)라는 용어로 표현한다.
+
+### 9.3.1 로컬 로그인 구현하기
+
+로컬 로그인이란 다른 SNS 서비스를 통해서 로그인하지 않고 자체적으로 회원가입 후 로그인하는 것을 의미한다.
+
+Passport에서 이를 구현하려면 passport-local 모듈이 필요한데 이미 설치했으므로 로컬 로그인 전략만 세우면된다.
+
+### 9.3.2 카카오 로그인 구현하기
+
+카카오 로그인이란 로그인 인증 과정을 카카오에 맡기는 것을 뜻한다. SNS 로그인의 특징은 회원가입 절차가 따로 없다는 것이다.
+
+SNS 로그인 전략은 로컬 로그인 전략보다 다소 복잡하다.
+
+passport-kakao 모듈로부터 Strategy 생성자를 불러와 전략을 구현한다.
+
+GET /auth/kakao로 접근하면 카카오 로그인 과정이 시작되고 로그인 후 성공 여부 결과를 GET /auth/kakao/callback으로 받는다.> 로컬 로그인과 다른점은 passport.authenticate 메서드에 콜백 함수를 제공하지 않는 것이다. 카카오 로그인은 로그인 성공시 내부적으로 req.login을 호출하기 때문이다.
+
+### 9.4 multer 패키지로 이미지 업로드 구현하기
+
+multer 패키지 설치
+
+```jsx
+$ npm i multer
+```
+
+실제 서버 운영시현재 multer 패키지는 이미지를 서버 디스크에 저장한다. 간단하지만 서버에 문제가 생기면 이미지가 제공되지 않거나 손실될 수 있다. 클라우드 스토리지 같은 정적 파일 제공 서비스를 사용하여 이미지를 따로 저장하고 제공하는 것이 좋다. multer-s3 또는 multer-google-storage 같은 패키지를 이용해서 사용가능하다.
+
+### 9.5 프로젝트 마무리하기
+
+deserializeUSer 에서 include에 계속 attributes 를 지정하는 이유는 실수로 비밀번호를 조회하는 것을 방지하기 위해서이다.
+
+### 9.6 함께 보면 좋은 자료
